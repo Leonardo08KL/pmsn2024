@@ -16,10 +16,12 @@ class DashboardScreen extends StatelessWidget {
         child: ListView(
           children: [
             const UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                    backgroundImage: NetworkImage('https://i.pravatar.cc/500')),
-                accountName: Text('Leonardo Covarrubias Lemus'),
-                accountEmail: Text('19031645@itcelaya.edu.mx')),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage('https://i.pravatar.cc/500'),
+              ),
+              accountName: Text('Leonardo Covarrubias Lemus'),
+              accountEmail: Text('19031645@itcelaya.edu.mx'),
+            ),
             const ListTile(
               leading: Icon(Icons.phone),
               title: Text("Práctica 1"),
