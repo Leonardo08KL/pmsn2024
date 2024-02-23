@@ -8,8 +8,8 @@ import 'package:sqflite/sqflite.dart';
 class ProductsDatabase {
   static final NAMEDB = 'DESPENSADB';
   static final VERSIONDB = 1;
-  static Database? _database;
 
+  static Database? _database;
   Future<Database> get database async {
     if (_database != null) return _database!;
     return _database = await _initDatabase();
@@ -22,13 +22,12 @@ class ProductsDatabase {
       pathDB,
       version: VERSIONDB,
       onCreate: (db, version) {
-        String query = '''CREATE TABLE tblProductos (
-          idProducto INTERGER PRIMARY KEY,
+        String query = '''CREATE TABLE tblProductos(
+          idProducto INTEGER PRIMARY KEY,
           nomProducto VARCHAR(30),
-          canProducto INTERGER,
-          fechaCaducidad DATE,
-          )''';
-
+          canProducto INTEGER,
+          fechaCaducidad VARCHAR(10)
+        )''';
         db.execute(query);
       },
     );
@@ -44,10 +43,8 @@ class ProductsDatabase {
     return conexion.update(
       'tblProductos',
       data,
-      where: 'idProducto  = ?',
-      whereArgs: [
-        data['idProducto'],
-      ],
+      where: 'idProducto = ?',
+      whereArgs: [data['idProducto']],
     );
   }
 
