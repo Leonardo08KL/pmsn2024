@@ -45,6 +45,13 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              leading: Icon(Icons.close),
+              title: Text("Movies App"),
+              subtitle: Text("Consulta de pelicula populares"),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, "/movies"),
+            ),
             DayNightSwitcher(
               isDarkModeEnabled: AppValueNotifier.banTheme.value,
               onStateChanged: (isDarkModeEnabled) {

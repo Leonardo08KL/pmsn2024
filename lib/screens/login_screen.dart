@@ -17,7 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
     //   color: const Color.fromARGB(255, 3, 2, 0),
     //   fontSize: 40,
     // ),
-    decoration: const InputDecoration(border: OutlineInputBorder()),
+    decoration: const InputDecoration(
+      border: OutlineInputBorder(),
+    ),
   );
 
   final pdwUser = TextFormField(
@@ -32,8 +34,11 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage('images/madara.jpg'))),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('images/madara.jpg'),
+          ),
+        ),
         child: Column(
           // alignment: Alignment.center,
           children: [
@@ -49,8 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   height: 155,
                   width: MediaQuery.of(context).size.width * .9,
                   child: ListView(
@@ -67,35 +73,45 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Positioned(
-                bottom: 50,
-                child: Container(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width * .9,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      SignInButton(Buttons.Email, onPressed: () {
+              bottom: 50,
+              child: Container(
+                height: 200,
+                width: MediaQuery.of(context).size.width * .9,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    SignInButton(
+                      Buttons.Email,
+                      onPressed: () {
                         setState(() {
                           isLoading = !isLoading;
                         });
-                        Future.delayed(new Duration(milliseconds: 5000), () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => new DashboardScreen(),
-                          //     ));
-                          Navigator.pushNamed(context, "/dash")
-                              .then((value) => setState(() {
-                                    isLoading = !isLoading;
-                                  }));
-                        });
-                      }),
-                      SignInButton(Buttons.Google, onPressed: () {}),
-                      SignInButton(Buttons.Facebook, onPressed: () {}),
-                      SignInButton(Buttons.GitHub, onPressed: () {}),
-                    ],
-                  ),
-                )),
+                        Future.delayed(
+                          const Duration(milliseconds: 5000),
+                          () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => new DashboardScreen(),
+                            //     ));
+                            Navigator.pushNamed(context, "/dash").then(
+                              (value) => setState(
+                                () {
+                                  isLoading = !isLoading;
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    SignInButton(Buttons.Google, onPressed: () {}),
+                    SignInButton(Buttons.Facebook, onPressed: () {}),
+                    SignInButton(Buttons.GitHub, onPressed: () {}),
+                  ],
+                ),
+              ),
+            ),
             isLoading
                 ? const Positioned(
                     top: 260,

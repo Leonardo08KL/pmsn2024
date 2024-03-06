@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pmsn2024/screens/dashboard_screen.dart';
+import 'package:pmsn2024/screens/datail_movie_screen.dart';
 import 'package:pmsn2024/screens/despensa_screen.dart';
+import 'package:pmsn2024/screens/popular_movies_screen.dart';
 import 'package:pmsn2024/screens/splash_screen.dart';
 import 'package:pmsn2024/settings/app_value_notifier.dart';
 import 'package:pmsn2024/settings/theme.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,10 +22,12 @@ class MyApp extends StatelessWidget {
           theme: value
               ? ThemeApp.darkTheme(context)
               : ThemeApp.lightTheme(context),
-          home: SplashScreen(),
+          home: const SplashScreen(),
           routes: {
-            "/dash": (BuildContext context) => DashboardScreen(),
-            "/despensa": (BuildContext context) => DespensaScreen(),
+            "/dash": (BuildContext context) => const DashboardScreen(),
+            "/despensa": (BuildContext context) => const DespensaScreen(),
+            "/movies": (BuildContext context) => const PopularMoviesScreen(),
+            "/detail": (BuildContext context) => const DetailMovieScreen(),
           },
         );
       },

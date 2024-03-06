@@ -15,8 +15,10 @@ class SplashScreen extends StatelessWidget {
         "https://sandstormit.com/wp-content/uploads/2021/06/incognito-2231825_960_720-1.png",
         height: 200,
       ),
-      done: Done(const LoginScreen(),
-          animationDuration: const Duration(milliseconds: 300)),
+      done: Done(
+        const LoginScreen(),
+        animationDuration: const Duration(milliseconds: 300),
+      ),
     );
   }
 }

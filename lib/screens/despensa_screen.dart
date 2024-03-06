@@ -1,3 +1,4 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pmsn2024/database/products_database.dart';
@@ -40,7 +41,7 @@ class _DespensaScreenState extends State<DespensaScreen> {
               future: productsDB!.CONSULTAR(),
               builder: (context, AsyncSnapshot<List<ProductosModel>> snapshot) {
                 if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                     child: Text('Algo salio mal :('),
                   );
                 } else {
@@ -66,7 +67,7 @@ class _DespensaScreenState extends State<DespensaScreen> {
 
   Widget itemDespensa(ProductosModel producto) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
           color: Colors.greenAccent,
           borderRadius: BorderRadius.circular(10),
@@ -81,10 +82,41 @@ class _DespensaScreenState extends State<DespensaScreen> {
             children: [
               IconButton(
                   onPressed: () {
-                    showModal(context, null);
+                    showModal(context, producto);
                   },
-                  icon: Icon(Icons.edit)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+                  icon: const Icon(Icons.edit)),
+              IconButton(
+                  onPressed: () async {
+                    ArtDialogResponse response = await ArtSweetAlert.show(
+                        barrierDismissible: false,
+                        context: context,
+                        artDialogArgs: ArtDialogArgs(
+                            denyButtonText: "Cancel",
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            confirmButtonText: "Yes, delete it",
+                            type: ArtSweetAlertType.warning));
+
+                    if (response == null) {
+                      return;
+                    }
+
+                    if (response.isTapConfirmButton) {
+                      productsDB!.ELIMINAR(producto.idProducto!).then((value) {
+                        if (value > 0) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  type: ArtSweetAlertType.success,
+                                  title: "Deleted!"));
+                          AppValueNotifier.banProducts.value =
+                              !AppValueNotifier.banProducts.value;
+                        }
+                      });
+                      return;
+                    }
+                  },
+                  icon: const Icon(Icons.delete))
             ],
           )
         ],
@@ -118,58 +150,48 @@ class _DespensaScreenState extends State<DespensaScreen> {
     final btnAgregar = ElevatedButton.icon(
         onPressed: () {
           if (producto == null) {
-            productsDB!.INSERTAR(
-              {
-                "nomProducto": conNombre.text,
-                "canProducto": int.parse(conCantidad.text),
-                "fechaCaducidad": conFecha.text
-              },
-            ).then(
-              (value) {
-                Navigator.pop(context);
-                String msj = "";
-                if (value > 0) {
-                  AppValueNotifier.banProducts.value =
-                      !AppValueNotifier.banProducts.value;
-                  msj = "Producto Insertado";
-                } else {
-                  msj = "Ocurrio un error :()";
-                }
-                var snackbar = SnackBar(content: Text(msj));
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            );
+            productsDB!.INSERTAR({
+              "nomProducto": conNombre.text,
+              "canProducto": int.parse(conCantidad.text),
+              "fechaCaducidad": conFecha.text
+            }).then((value) {
+              Navigator.pop(context);
+              String msj = "";
+              if (value > 0) {
+                AppValueNotifier.banProducts.value =
+                    !AppValueNotifier.banProducts.value;
+                msj = "Producto Insertado";
+              } else {
+                msj = "Ocurrio un error :()";
+              }
+              var snackbar = SnackBar(content: Text(msj));
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+            });
           } else {
-            productsDB!.ACTUALIZAR(
-              {
-                "idProducto": producto.idProducto,
-                "nomProducto": conNombre.text,
-                "canProducto": int.parse(conCantidad.text),
-                "fechaCaducidad": conFecha.text
-              },
-            ).then(
-              (value) {
-                Navigator.pop(context);
-                String msj = "";
-                if (value > 0) {
-                  AppValueNotifier.banProducts.value =
-                      !AppValueNotifier.banProducts.value;
-                  msj = "Producto Insertado";
-                } else {
-                  msj = "Ocurrio un error :()";
-                }
-                var snackbar = SnackBar(
-                  content: Text(msj),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            );
+            productsDB!.ACTUALIZAR({
+              "idProducto": producto.idProducto,
+              "nomProducto": conNombre.text,
+              "canProducto": int.parse(conCantidad.text),
+              "fechaCaducidad": conFecha.text
+            }).then((value) {
+              Navigator.pop(context);
+              String msj = "";
+              if (value > 0) {
+                AppValueNotifier.banProducts.value =
+                    !AppValueNotifier.banProducts.value;
+                msj = "Producto Actualizado";
+              } else {
+                msj = "Ocurrio un error :()";
+              }
+              var snackbar = SnackBar(content: Text(msj));
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+            });
           }
         },
         icon: Icon(Icons.save),
         label: Text('Guardar'));
 
-    final space = SizedBox(
+    final space = const SizedBox(
       height: 10,
     );
 
