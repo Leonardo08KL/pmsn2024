@@ -13,6 +13,8 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
   Widget build(BuildContext context) {
     final popularModel =
         ModalRoute.of(context)!.settings.arguments as PopularModel;
-    return Center(child: Text(popularModel.title!));
+    return Center(
+      child: Text(popularModel.title!),
+    );
   }
 }

@@ -40,7 +40,7 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: FadeInImage(
-                      placeholder: AssetImage('images/giphy.gif'),
+                      placeholder: const AssetImage('images/giphy.gif'),
                       image: NetworkImage(
                           "https://image.tmdb.org/t/p/w500/${snapshot.data![index].posterPath}"),
                     ),
@@ -64,8 +64,5 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
     );
   }
 }
-
-
 // la diferencia de un listview y un sliver list
-
 // cuando haces es scrooll y necesitas contruir mas se contruyen mientras se necesiten

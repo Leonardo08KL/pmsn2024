@@ -105,9 +105,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    SignInButton(Buttons.Google, onPressed: () {}),
-                    SignInButton(Buttons.Facebook, onPressed: () {}),
-                    SignInButton(Buttons.GitHub, onPressed: () {}),
+                    SignInButton(
+                      Buttons.Google,
+                      onPressed: () {},
+                    ),
+                    SignInButton(
+                      Buttons.Facebook,
+                      onPressed: () {},
+                    ),
+                    SignInButton(
+                      Buttons.GitHub,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/registro');
+                      },
+                      icon: const Icon(
+                        Icons.app_registration,
+                        color: Colors.black,
+                      ),
+                      label: const Text(
+                        "Register account",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    )
                   ],
                 ),
               ),

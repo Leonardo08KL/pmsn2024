@@ -41,8 +41,18 @@ dependencies:
   sqflite: ^2.3.2
   path_provider: ^2.1.2
   intl: ^0.19.0
+  image_picker: ^1.0.7
+  flutter_pw_validator: ^1.6.0
+  email_validator: ^2.1.17
+  lottie: ^3.1.0
+  animated_text_kit: ^4.2.2
   art_sweetalert: ^0.0.5
+  smooth_page_indicator: ^1.1.0
+  flutter_animate: ^4.5.0
   dio: ^5.4.1
+  firebase_core: ^2.27.0
+  cloud_firestore: ^4.15.8
+  firebase_auth: ^4.17.8
 
 
 dev_dependencies:
