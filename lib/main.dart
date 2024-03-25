@@ -5,6 +5,7 @@ import 'package:pmsn2024/screens/datail_movie_screen.dart';
 import 'package:pmsn2024/screens/despensa_screen.dart';
 import 'package:pmsn2024/screens/popular_movies_screen.dart';
 import 'package:pmsn2024/screens/register_screen.dart';
+import 'package:pmsn2024/screens/session.dart';
 import 'package:pmsn2024/screens/splash_screen.dart';
 import 'package:pmsn2024/settings/app_value_notifier.dart';
 import 'package:pmsn2024/settings/theme.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
             "/despensa": (BuildContext context) => const DespensaScreen(),
             "/registro": (BuildContext context) => const RegisterScreen(),
             "/movies": (BuildContext context) => const PopularMoviesScreen(),
+            "/sesion": (BuildContext context) => const Sesion(),
             "/detail": (BuildContext context) => const DetailMovieScreen(),
           },
         );

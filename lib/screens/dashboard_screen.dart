@@ -1,5 +1,6 @@
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:pmsn2024/network/sessionid_tmdb.dart';
 import 'package:pmsn2024/settings/app_value_notifier.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -29,34 +30,59 @@ class DashboardScreen extends StatelessWidget {
               trailing: Icon(Icons.chevron_right),
             ),
             ListTile(
-              leading: Icon(Icons.shop),
-              title: Text("Mi despensa"),
-              subtitle: Text("Relacion de productos que no voy a usar"),
-              trailing: Icon(Icons.chevron_right),
+              leading: const Icon(Icons.shop),
+              title: const Text("Mi despensa"),
+              subtitle: const Text("Relacion de productos que no voy a usar"),
+              trailing: const Icon(Icons.chevron_right),
               onTap: () => Navigator.pushNamed(context, "/despensa"),
             ),
             ListTile(
-              leading: Icon(Icons.close),
-              title: Text("Salir"),
-              subtitle: Text("Hasta luego"),
+              leading: const Icon(Icons.shop),
+              title: const Text("Mi despensa 2"),
+              subtitle: const Text("Relacion de productos que no voy a usar"),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, "/despensa"),
+            ),
+            ListTile(
+              //Se utiliza para manejar titulos y subtitulos en cada elemento, ademas de tener cosas a los lados
+              leading: Icon(Icons.movie),
+              title: Text("Moviles app"),
+              subtitle: Text("Consulta de peliculas particulares"),
               trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                SessionID().getSessionId();
+                Navigator.pushNamed(context, "/movies");
+              },
+            ),
+            ListTile(
+              //Se utiliza para manejar titulos y subtitulos en cada elemento, ademas de tener cosas a los lados
+              leading: Icon(Icons.movie),
+              title: Text("Session"),
+              subtitle: Text("Consulta de peliculas particulares"),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                SessionID().getSessionId();
+                Navigator.pushNamed(context, "/sesion");
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.close),
+              title: const Text("Salir"),
+              subtitle: const Text("Hasta luego"),
+              trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              leading: Icon(Icons.close),
-              title: Text("Movies App"),
-              subtitle: Text("Consulta de pelicula populares"),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () => Navigator.pushNamed(context, "/movies"),
-            ),
-            DayNightSwitcher(
-              isDarkModeEnabled: AppValueNotifier.banTheme.value,
-              onStateChanged: (isDarkModeEnabled) {
-                AppValueNotifier.banTheme.value = isDarkModeEnabled;
-              },
+            Padding(
+              padding: const EdgeInsets.only(right: 100, left: 100),
+              child: DayNightSwitcher(
+                isDarkModeEnabled: AppValueNotifier.banTheme.value,
+                onStateChanged: (isDarkModeEnabled) {
+                  AppValueNotifier.banTheme.value = isDarkModeEnabled;
+                },
+              ),
             ),
           ],
         ),

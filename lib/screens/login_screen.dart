@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:pmsn2024/firebase/email_auth_firebase.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,26 +11,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
-
-  final txtUser = TextFormField(
-    keyboardType: TextInputType.emailAddress,
-    // style: const TextStyle(
-    //   color: const Color.fromARGB(255, 3, 2, 0),
-    //   fontSize: 40,
-    // ),
-    decoration: const InputDecoration(
-      border: OutlineInputBorder(),
-    ),
-  );
-
-  final pdwUser = TextFormField(
-    keyboardType: TextInputType.text,
-    obscureText: true,
-    // style: TextStyle(color: const Color.fromARGB(255, 3, 2, 0), fontSize: 40),
-  );
+  final emailAuthFirebase = EmailAuthFirebase();
+  final _emailController = TextEditingController();
+  final _contrasenaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final txtUser = TextFormField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      // style: const TextStyle(
+      //   color: const Color.fromARGB(255, 3, 2, 0),
+      //   fontSize: 40,
+      // ),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+    );
+
+    final pdwUser = TextFormField(
+      controller: _contrasenaController,
+      keyboardType: TextInputType.text,
+      obscureText: true,
+      // style: TextStyle(color: const Color.fromARGB(255, 3, 2, 0), fontSize: 40),
+    );
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -86,23 +92,50 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           isLoading = !isLoading;
                         });
-                        Future.delayed(
-                          const Duration(milliseconds: 5000),
-                          () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => new DashboardScreen(),
-                            //     ));
-                            Navigator.pushNamed(context, "/dash").then(
-                              (value) => setState(
-                                () {
-                                  isLoading = !isLoading;
+                        emailAuthFirebase
+                            .signUpUser(
+                          name: null,
+                          email: _emailController.text,
+                          password: _contrasenaController.text,
+                        )
+                            .then(
+                          (value) {
+                            if (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("El usuario se ha agregado.."),
+                                ),
+                              );
+                            } else {
+                              Navigator.pushNamed(context, '/dash').then(
+                                (value) {
+                                  setState(
+                                    () {
+                                      isLoading = !isLoading;
+                                    },
+                                  );
                                 },
-                              ),
-                            );
+                              );
+                            }
                           },
                         );
+                        // Future.delayed(
+                        //   const Duration(milliseconds: 5000),
+                        //   () {
+                        //     // Navigator.push(
+                        //     //     context,
+                        //     //     MaterialPageRoute(
+                        //     //       builder: (context) => new DashboardScreen(),
+                        //     //     ));
+                        //     Navigator.pushNamed(context, "/dash").then(
+                        //       (value) => setState(
+                        //         () {
+                        //           isLoading = !isLoading;
+                        //         },
+                        //       ),
+                        //     );
+                        //   },
+                        // );
                       },
                     ),
                     SignInButton(

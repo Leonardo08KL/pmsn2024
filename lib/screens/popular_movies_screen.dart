@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pmsn2024/model/popular_model.dart';
 import 'package:pmsn2024/network/api_popular.dart';
+import 'package:pmsn2024/screens/favorites_movies_screen.dart';
 
 class PopularMoviesScreen extends StatefulWidget {
   const PopularMoviesScreen({super.key});
@@ -14,35 +16,81 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+    //Inicializa antes de todo
     apiPopular = ApiPopular();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Películas Populares'),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Ionicons.heart,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const FavoritesMoviesScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  transitionDuration: Duration(
+                      milliseconds: 500), // Ajusta la duración de la transición
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder(
         future: apiPopular!.getPopularMovie(),
         builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot) {
-          //El snapshot trae cada elemento del arreglo (Es una lista del popular model)
           if (snapshot.hasData) {
             return GridView.builder(
-              //Se puede poner un .builder a un contenedor cuando no se cauntos elementos hay
+              itemCount: snapshot.data!.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: .5,
+                childAspectRatio: .7,
                 mainAxisSpacing: 10,
               ),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "/detail",
-                      arguments: snapshot.data![index]),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: FadeInImage(
-                      placeholder: const AssetImage('images/giphy.gif'),
-                      image: NetworkImage(
-                          "https://image.tmdb.org/t/p/w500/${snapshot.data![index].posterPath}"),
+                  onTap: () async {
+                    final trailers =
+                        await apiPopular!.getTrailer(snapshot.data![index].id!);
+                    final actors = await apiPopular!
+                        .getAllActors(snapshot.data![index].id!);
+
+                    Navigator.pushNamed(
+                      context,
+                      "/detail",
+                      arguments: {
+                        'popularMovies': snapshot.data![index],
+                        'trailers': trailers,
+                        'actors': actors,
+                        'favorites': false,
+                      },
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: FadeInImage(
+                        placeholder: const AssetImage("images/giphy.gif"),
+                        image: NetworkImage(
+                          "https://image.tmdb.org/t/p/w500/${snapshot.data![index].posterPath}",
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -51,7 +99,7 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
           } else {
             if (snapshot.hasError) {
               return const Center(
-                child: Text("Ocurrio un error :("),
+                child: Text("Ocurrio un error..."),
               );
             } else {
               return const Center(
@@ -64,5 +112,3 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
     );
   }
 }
-// la diferencia de un listview y un sliver list
-// cuando haces es scrooll y necesitas contruir mas se contruyen mientras se necesiten
